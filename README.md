@@ -14,3 +14,7 @@
 6. Tipos Vacíos.
 7. Tipos 'Null' y 'Undefined'.
 8. Describiendo valores usando Interfaces.
+
+### 3. Funciones 'Funky'.
+1. Sobrecarga de Funciones.
+2. Tipos Genéricos y Tipos de Parámetros.

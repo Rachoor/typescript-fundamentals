@@ -144,3 +144,90 @@ function test<T>(arg: T): T {
 test(1).toString();             // Lo convierte en 'number' y accedemos a sus métodos de 'number'.
 test('Hector').toUpperCase();   // Lo convierte en 'string' y accedmos a los métodos de 'string'.
 ```
+
+# 4. Módulos 'Maravillosos'
+
+### 4.1. 'Imports' y 'Exports'.
+TS nos permite Importar y Exportar Módulos entre diferentes archivos:
+1. Creamos un archivo ```utils.ts``` donde trasladamos todas las Funciones del ```main.ts```excepto la Función ```main()``` y le añadimos delante la palabra reservada ```export``` la cúal nos permitirá poder Importarla en cualquier archivo donde queramos utilizarla.
+```javascript
+export function generateRandomId(symbol: ValidSymbol, length: number) : string
+export function generateRandomId(options:GenerateConfig) : string
+export function generateRandomId(optionsOrSymbol: GenerateConfig | ValidSymbol) : string {
+    // Comprobar el Tipo del Parámetro
+    if(typeof optionsOrSymbol === 'string') {
+        return optionsOrSymbol + Math.random().toString(36).substr(2, length);    
+    }
+    return optionsOrSymbol.symbol + Math.random().toString(36).substr(2, optionsOrSymbol.length);
+}
+```
+2. En el ```main.ts``` en la primera línea importamos la Función del archivo ```utils.ts``` que necesitamos en la Función ```main()```:
+```javascript
+import { generateRandomId } from './utils'
+
+function main() {
+    var app = document.getElementById('app');
+    setInterval(function() {
+        if(app) {
+            app.innerHTML = generateRandomId({
+                                symbol: '#',
+                                length: 7
+                            });
+        }        
+    }, 1000);
+};
+```
+
+### 4.2. Configuración de Salida del Módulo Compliado
+Especificar módulo de Generación de Código en el archivo ```tsconfig.json```: 
+
+```javascript 
+"module": "commonjs", // 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'.
+```
+
+### 4.3. Cargar Módulos via 'Webpack'.
+
+1. Para usar 'webpack' necesitamos que nuestra App sea una App con Node.js. Conseguimos esto lanzando el siguiente comando en el 'root' del proyecto, el cúal nos creará el archivo ```package.json```.
+```javascript 
+yarn init -y
+```
+
+2. Instalamos como Dependencias de Desarrollo a través de Yarn TypeScript, Webpack y Webpack-Server con el siguiente comando:
+```javascript 
+yarn add -D typescript webpack@2.2.0 webpack-dev-server@2.2.0
+```
+
+3. Creamos el archivo de configuración de Webpack ```webpack.config.js``` e instalamos ```awesome-typescript-loader```:
+```javascript 
+yarn add -D awesome-typescript-loader
+```
+```javascript 
+module.exports = {
+    entry: 'src/app.ts',
+    output: {
+        filename: 'app.js',
+        path: __dirname + './dist'
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
+    },
+    module: {
+        rules: [{
+            test: /\.ts$/,
+            use: 'awesome-typescript-loader'
+        }]
+    }
+};
+```
+
+4. En el ```package.json``` creamos el script:
+```javascript 
+"scripts": {
+    "dev-server": "webpack-dev-server"
+}
+```
+
+4. Borramos la carpeta ```./dist```.
+
+5. Lanzamos la App en modo Desarrollo:
+```yarn dev-server```

@@ -1,0 +1,17 @@
+{
+    "name": "typescript-fundamentals",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/kotehector/typescript-fundamentals.git",
+    "author": "Héctor Menduíña Hermelo <kotehector@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "dev-server": "webpack-dev-server"
+    },
+    "devDependencies": {
+        "awesome-typescript-loader": "^3.2.2",
+        "typescript": "^2.4.2",
+        "webpack": "2.2.0",
+        "webpack-dev-server": "2.2.0"
+    }
+}

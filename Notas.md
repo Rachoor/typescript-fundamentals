@@ -103,3 +103,44 @@ function generateRandomId(options:GenerateConfig) : string {...}
 ```javascript
 return options.symbol + Math.random().toString(36).substr(2, options.length);
 ```
+
+# 3. Funciones 'Funky'.
+
+### 3.1. Sobrecarga de Funciones.
+1. Definir la misma Función con diferentes Tipos de Parámetros:
+
+    1.1. Con 2 Parámetros:
+    ```javascript
+    function generateRandomId(symbol: ValidSymbol, length: number) : string 
+    ```
+
+    1.2. Con Interface:
+    ```javascript
+    function generateRandomId(options:GenerateConfig) : string
+    ```
+
+    1.3. Definición final de la Función:
+    ```javascript
+    function generateRandomId(optionsOrSymbol: GenerateConfig | ValidSymbol) : string {
+        if(typeof optionsOrSymbol === 'string') {
+            return optionsOrSymbol + Math.random().toString(36).substr(2, length);    
+        }
+        return optionsOrSymbol.symbol + Math.random().toString(36).substr(2, optionsOrSymbol.length);
+    }
+    ```
+
+    1.4. Opciones que tenemos ahora para llamar a la Función:
+    ```javascript
+    generateRandomId('#', 5);
+    generateRandomId({ symbol:'#', length: 9});
+    ```
+
+### 3.2. Genéricos y Tipos de Parámetros.
+1. Definimos la Función y la definimos con el Tipo ```'T'```. Lo que quiere decir que el Tipo va a ser Genérico y TS hará la conversión por nosotros, dándonos acceso a todos los métodos del Tipo detectado.
+```javascript
+function test<T>(arg: T): T {
+    return arg;
+}
+test(1).toString();             // Lo convierte en 'number' y accedemos a sus métodos de 'number'.
+test('Hector').toUpperCase();   // Lo convierte en 'string' y accedmos a los métodos de 'string'.
+```
